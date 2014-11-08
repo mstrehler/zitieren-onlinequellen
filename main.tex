@@ -1,0 +1,379 @@
+% Vorlage für einen einfachen Artikel
+% Die Option draft markiert überlange Zeilen (für Nachbearbeitung)
+
+\documentclass[div=16,parskip=half,draft=true]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}	% Schrift "Latin Modern"
+\usepackage[ngerman]{babel}
+
+\usepackage{hyperref}
+\usepackage{bibentry}
+
+\usepackage{makeidx}
+
+
+% Packages für schönes Listening von Code. Das Paket color wird von 
+% listings gebraucht. Im Anschluss auch die verschiedenen nötigen
+% Definitionen
+\usepackage{listings}
+\lstloadlanguages{[LaTeX]Tex}
+
+\usepackage{color}
+\definecolor{light-gray}{gray}{0.95}
+
+\lstset{%
+	basicstyle=\small,% Kleine Schrift
+	language=[LaTeX]Tex,% Sprache und Dialekt
+	frame=none,% Kein Rahmen
+	backgroundcolor=\color{light-gray},% Leicht grau hinterlegt
+	extendedchars=true,	% Sollte eigentlich Umlaute unterstützen,
+						%tut es aber nicht
+	basicstyle=\ttfamily %Monotyp-Font
+	}
+
+\lstset{emph={@misc,author,title,year,url,note},emphstyle=\textbf}
+
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
+
+\usepackage[]{apacite}
+%\renewcommand{\bibliographytypesize}{\small}
+
+\title{Wissenschaftliches Zitieren von audiovisuellen und digitalen Medien mit BibTeX und dem \LaTeX-Paket \texttt{apacite}}
+\author{Marco Strehler (\href{mailto:marcostrehler@yahoo.de}{marcostrehler@yahoo.de})}
+
+\newcommand{\bibf}{\texttt{.bib}-Datei}
+\newcommand{\apacite}{\texttt{apacite}}
+
+\makeindex
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+
+Der Text behandelt zu zitierende Spezialfälle gemäss den APA-Regeln (sogenannter \textsl{APA style}). Die Hauptsache macht das \LaTeX-Paket \apacite, dazu müssen aber insbesondere die Angaben im BibTeX-File korrekt sein.
+
+Dieser Text behandelt also nur einen sehr kleinen Ausschnitt aus dem Thema <<korrektes Zitieren>>, nämlich \dots
+\begin{itemize}
+	\item zitieren von speziellen Quellen (Webseiten, Forumsbeiträge, E-Mails, Podcasts, Filme) \dots
+	\item unter der Verwendung des Programmes BibTex und \dots
+	\item gemäss den APA-Richtlinien (resp. dem Paket \apacite).
+\end{itemize}
+
+\end{abstract}
+
+\tableofcontents
+
+\section{Kleines Glossar}
+
+\begin{description}
+	\item[APA\index{APA}]
+		American Psychological Association
+	\item[APA style\index{APA style}]
+		Standard für Wissenschaftliche Publikationen gemäss der APA. 	
+		Festgelegt in einem entsprechenden Manual.
+	\item[apacite\index{apacite}]
+		Package für die umsetzung des APA style
+	\item[BibTeX\index{BibTeX}]
+		Programm für das Erzeugen des Literaturverzeichnisses.
+	\item[\bibf\index{.bib-File}]
+		Datenbankdatei mit Angaben zu den Quellen.
+\end{description}
+
+\section{Minimalbeispiel}
+
+\begin{lstlisting}[caption={Minimalbeispiel für apacite-Paket},label=lststringdef]
+\documentclass{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{apacite}
+\usepackage{url}
+
+\begin{document}
+
+% \cite{NZZ2005}
+
+\bibliographystyle{apacite}
+\bibliography{file.bib}
+
+\end{document}
+\end{lstlisting}
+
+\section{Besonderheiten zu BibTeX und zur \bibf}
+
+Ein BibTeX-Feld wird durch seinen Namen, gefolgt von einem Gleichheitszeichen und dem Inhalt definiert. Der Inhalt kann durch Anführungszeichen oder geschwungene Klammern begrenzt werden. 
+Dabei können Zeichenketten mit dem Zeichen \# zusammengefügt werden.
+
+Kommentare\index{BibTeX!Kommentar} in einem \bibf benötigen keine spezielle Auszeichnung werden. Jede Zeile ohne @ am Beginn wird ignoriert. Das durchgängige Verwenden von einem Kommentarzeichen am Zeilenanfang wie \% erleichtert aber die Lesbarkeit in einem Texteditor erheblich.
+
+Definition\index{BibTeX!Zeichenkette} von Zeichenketten:
+
+\begin{lstlisting}[caption={\bibf: Zeichenketten-Definitionen (Beispiele)},label=lststringdef]
+@STRING(str-trenner = " -- ")
+@STRING(str-online = "Online; Stand ")
+
+@STRING(pub-wiki = "{W}ikipedia")
+@STRING(pub-nyt = "{NYT}imes.com")
+@STRING(pub-spiegelonline = "{SPIEGEL}.{O}nline")
+\end{lstlisting}
+
+\subsection{Feld \texttt{crossref} einsetzen}
+
+Minimalbeispiel für Dokumentation eines Vortrages in der \bibf (auch JabRef-Tauglich)
+
+\begin{lstlisting}[caption={\bibf: Beispiel für die Verwendung von \texttt{crossref}. Der Wert des \texttt{crossref}-Tag bezieht sich auf ein weiteren Eintrag.},%
+	label=lst:crossrefchild]
+@LECTURE{Schick2013,
+  author = {Matthis Schick},
+  title = {Multimodale {B}ehandlung von {K}riegsopfern},
+  howpublished = {Vortrag},
+  crossref = {FachsympTrauma20130627}
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={\bibf: die Werte, die im verweisenden Eintrag fehlen, werden aus dem Eintrag ergänzt, auf den verwiesen wird},%
+	label=lst:crossrefparent]
+@MISC{FachsympTrauma20130627,
+  month = {\APACmonth{6}},
+  year = {2013},
+  day = {27},
+  symposium = {{F}achsymposium {T}raumafolgest{\"o}rungen}
+}
+\end{lstlisting}
+
+\subsection{Konventionen der Listings}
+
+Auf die Felder \texttt{language} und \texttt{keywords} wurde in den Listings verzichtet.
+
+\begin{lstlisting}[caption={Beispiel für Tag language und keywords}]
+	...
+	language = {ngerman},
+	keywords = {crossref,symposium},
+	...
+\end{lstlisting}
+
+
+\section{Zitieren von speziellen Quellen}
+
+\subsection{Zitieren von Vorträgen ohne Publikation}
+
+\begin{lstlisting}[caption={BibTex-Eintrag eines Vortrages},%
+	label=lst:label]
+@LECTURE{Dieckmann2011,
+  author = {Eva Dieckmann},
+  title = {{N}arzisstischen Pers{\"o}nlichkeitsst{\"o}rung},
+  day = {15},
+  month = {\APACmonth{4}},
+  year = {2011},
+  symposium = {{M}{\"u}nsterlinger {T}agung, 15. - 16.04.2011},
+  chair = {Gerhard Dammann},
+  howpublished = {Vortrag}
+}
+\end{lstlisting}
+
+\begin{itemize}
+	\item \texttt{symposium}: Name der Veranstaltung.
+	\item \texttt{month}: Immer Monats-Makro verwenden
+		(\texttt{jan}, \texttt{feb}, \texttt{mar},
+		 \texttt{apr}, \texttt{may}, \texttt{jun},
+		 \texttt{jul}, \texttt{aug}, \texttt{sep}, 
+		 \texttt{oct}, \texttt{nov} und \texttt{dec}.
+		 D.h. keine Ziffern oder den Monatsnamen ausschreiben.
+\end{itemize}
+
+Dabei ist in \texttt{howpublished} die Situation, an der das Paper präsentiert wurde, wenn \texttt{symposium} leer ist.
+
+\subsection{Zitieren Spielfilme}
+In Bearbeitung
+
+\section{Zitieren von Online-Quellen}
+
+\subsection{Zitieren von Online-Zeitschriften}
+
+\begin{lstlisting}[caption={\bibf: Beispiel SPIEGEL ONLINE},%
+	label=lst:spiegelonline]
+@MAGAZINE{Seidler2011,
+  author = {Christoph Seidler},
+  title = {{K}atholische {{\"A}}rzte wollen {H}omosexuelle mit
+  		{H}om{\"o}opathie kurieren},
+  journal = {SPIEGEL ONLINE},
+  year = {2011},
+  month = {\APACmonth{06}},
+  day = {01},
+  url = {http://www.spiegel.de/...},
+  lastchecked = {02.06.2011}
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={\bibf: Beispiel NYTimes.com},%
+	label=lst:label]
+@misc{Dowd2011,
+   author = {Maureen Dowd},
+   title = {Powerful and Primitive -- NYTimes.com},
+   year = {2011},
+   url = {http://www.nytimes.com/...},
+   note = {[Online; 24. Mai 2011]}
+}	
+\end{lstlisting}
+
+
+\subsection{Zitieren von Wikipedia-Artikeln}
+
+Auf der Wikipedia-Seite findet sich unter dem Menü-Eintrag <<Werkzeuge>> der Befehl <<Seite zitieren>>. Da hat man schon alle Informationen zusammen, es braucht allerdings noch etwas Handarbeit, dass die Verarbeitung in BibTeX auch klappt.
+
+\begin{lstlisting}[caption={originaler bib-Eintrag für Wikipedia-Artikel, manueller Zeilenumbruch bei title und url wg. Überlänge},%
+	label=wikiorignal]
+@misc{ wiki:xxx,
+  author = "Wikipedia",
+  title = "Sigmund Freud
+  	--- Wikipedia{,} Die freie Enzyklopaedie",
+  year = "2013",
+  url = "http://de.wikipedia.org/w/index.php?
+  	title=Sigmund_Freud&oldid=118105644",
+  note = "[Online; Stand 15. Mai 2013]"
+}
+\end{lstlisting}
+
+Den originalen Wikipedia-Artikel ist aus dem Listing \ref{wikioriginal} ersichtlich. Dazu müssen noch folgende Änderungen gemacht werden \cite{wiki:citingwikipedia}:
+
+\begin{itemize}
+	\item Änderung des Bezeichners <<wiki:xxx>> in etwas Sinnstiftendes. Dabei auf Varialbenkonventionen achten. Unterstriche führen in LaTeX gelegentlich zu Verwirrung.
+	
+	\item Im Feld \texttt{author} <<Wikipedia>> mit dem Lemma ersetzen. Die APA-Richtlinien verlangen, dass dabei der Titel des Artikel an Stelle des Autors kommt. Um bei Titeln, die aus mehr aus einem Wort bestehen, die Interpretation als Name zu vermeiden, müssen sie zusätzlich in geschweifte Klammern gefasst werden. Aus dem Lemma <<Sigmund Freud>> soll nicht <<Freud, S.>> werden.
+	
+	\item Kürzen des Titels um den Werbespruch, der muss ja in der Bibliographie nicht dutzendweise auftauchen.
+	\item Die Web-Adresse soll direkt auf den betreffenden Artikel verweisen. Dabei wandle ich die vorgeschlagenen Permamentlink auf die kürzere Version um. Wenn jemand die alte Version interessiert, kann er sie ja mittels der Datumsangabe weiter unten aus dem Archiv holen. Dieser Nachteil scheint mir im Bezug auf die damit kürzere URL vertretbar.
+	\item Da Notizen von apacite automatisch geklammert werden, ist die eckige Klammerung nicht nötig.
+	\item Grossschreibweisen müssen in geschweifte Klammern <<\{\}>> gefasst werden.
+	\item Die Wertangaben können in Anführungszeichen oder Klammern gefasst werden.
+	\item Umlaute müssen durch \LaTeX-Equivalente ersetzt werden.
+	\item Wiederkehrende Zeichenketten können durch String-Definitonen in der \bibf ersetzt werden. Bei diesem Beispiel geschehen 
+\end{itemize}
+
+\begin{lstlisting}[caption={Modifizierter Eintrag für Wikipedia-Artikel},label=lstwikipedia]
+ @misc{ wiki:sigmundfreud,
+   author = "{Sigmund Freud}",
+   title = "Sigmund Freud" # trenner # pub-wiki,
+   year = "2013",
+   url = "http://de.wikipedia.org/wiki/Sigmund_Freud",
+   note = online # "15. Mai 2013"
+ }
+\end{lstlisting}
+
+Als Beispiel: \cite{wiki:sigmundfreud}.
+
+\subsection{Zitieren generische Website}
+
+In Bearbeitung.
+
+\subsection{Zitieren Podcast}
+
+\subsubsection{Podcast archivieren}
+
+Manchmal möchte man einen Podcast dauerhaft als Film in der iTunes\index{iTunes} Mediathek archivieren. Vorgehen:
+Programm iTunes öffnen. Unter Mediathek zu <<Podcasts>> gehen, dort den gewünschten Podcast markieren und mit rechtem Mausklick: Informationen anwählen, dort -> Reiter Optionen und Medienart von <<Podcast>> auf <<Film>> umstellen. Der Eintrag des Podcasts ist dann unter <<Filme>> zu finden.
+
+
+\subsubsection{Referenz in BibTeX}
+
+Nicht vergessen das url-Package\index{url package} einzubinden, ansonsten wird eine lange Netz-Adresse nicht getrennt. Die doppelte Klammerung\index{Klammerung!doppelt} beim Feld \texttt{author}\index{BibTeX-Feld!author} nicht vergessen, ansonsten wird der Eintrag als Name mit Vor- u. Nachnamen interpretiert "Radio und Fernsehen, S.".
+
+\begin{lstlisting}[caption={Beispiel Podcast (URL gekürzt)},%
+	label=lst:podcast]
+@MISC{Kassensturz2013,
+  author = {{Schweizer {R}adio und {F}ernsehen}},
+  title = {Kassensturz, {S}endung vom 11.06.2013},
+  year = {2013},
+  url = {http://www.srf.ch/...}
+}
+\end{lstlisting}
+
+\subsection{Zitieren Forumsbeiträge}
+
+In Bearbeitung.
+
+\subsection{Zitieren E-Mail-Nachrichten}
+
+In Bearbeitung.
+
+\section{APA-Style}
+
+Häufig sieht man folgende Zitierweise: Autor, A. (Jahreszahl). Titel. Verfügbar unter
+Internetadresse [Datum]
+
+\begin{itemize}
+
+\item Döring, N. (1996). Lernen und Lehren im Netz. Verfügbar unter http://www.cs.tuberlin.de/~doering/lernen.htm [02.03.97]
+
+\item Beim Zitieren eines Artikels aus einer Zeitschrift, den man nur online gelesen hat, dessen elektronische Version jedoch mit der Papierversion inhaltlich identisch ist, wendet man folgende
+Zitierweise an:\\
+VandenBos, G., Knapp, S., \& Doe, J. (2001). Role of reference elements in the selection of resources by psychology undergraduates [Electronic version]. Journal of Bibliographic Research, 5, 117-123.
+\item Für das Zitieren eines Artikels aus einem nur online verfügbaren Journal gilt:
+Beispiel\\
+Frederickson, B. L. (2000, March 7). Cultivating positive emotions to optimize health and wellbeing.
+Prevention and Treatment, 3, Article 0001a. Retrieved November 20. Verfügbar unter
+http://journals.apa.org/prevention/volume3/pre0030001a.html
+
+\end{itemize}
+
+\subsection{Zitate von Zitaten (z.B. wenn erstes Zitat nicht verfügbar ist)}
+
+Beide Literaturhinweise müssen auch hinten im Literaturverzeichnis eingetragen werden.
+
+Im Fliesstext: <<\dots, wie Scheeringa et al. (1995, 2005), zit. n. Landolt (Jahr, S.x) beschrieben hat, \dots>>.
+
+Beiden Hinweise in Klammern: <<\dots (Scheeringa et al., 1995, 2005, zit.n. Landolt, Jahr, S.x) \dots >>.
+
+\cite{wiki:AMA}
+
+\subsection{Anpassungen Literaturverzeichnis}
+
+\subsubsection{Labels}
+Labels können angepasst werden.
+
+\begin{lstlisting}[caption={Mit dem \texttt{renewcommad}-Befehl können Feinjustierungen des Literaturverzeichnisses vorgenommen werden.},%
+	label=lst:labelanpassung]
+\bibliographystyle{apacite}
+\renewcommand{\BCHAIR}{Vorsitz}
+\renewcommand{\BRetrievedFrom}{}%Original "Zugriff auf"
+\bibliography{zitieren}
+\end{lstlisting}
+
+\subsubsection{Verwendung von Kurzlinks (Short-URL)}
+
+Short-URLs sind zu einem festen Bestandteil des Internet geworden. Dazu beigetragen hat vor allem das Bedürfnis, Informationen möglichst kompakt weiterzutragen (z.B. für SMS oder Twitter usw.)
+
+Durch einen \emph{URL Shortener Service} wird es möglich, eine lange Webadresse in eine sehr kurze Adresse zu packen. Durch das Klicken auf die Short-URL wird der Benutzer dann zur echten langen URL weitergeleitet.
+
+Das Nutzen von Short-URL Diensten hat jedoch auch grosse Nachteile \cite{Ruef2011}. Da das Argument des eingeschränkten Platzes wenig zählt, dafür das Wiederauffinden der Informationen entscheiden ist, scheinen Short-URL für diese Zwecke nicht geeignet. Sobald der entsprechende Service eingeht, werden alle entsprechenden Short-URL ungültig.
+
+\subsubsection{Letzter Abruf einer Web-Ressource}
+Den letzten Abruf einer Website kann in folgenden Felder vermerkt werden:
+
+\begin{description}
+	\item[\texttt{lastchecked}] Propriäteres Feld von \apacite (?)
+	\item[\texttt{note}] Wird am Ende des Eintrage angezeigt.
+\end{description} 
+
+\subsubsection{Abspeichern von Informationen}
+Eigenes Archiv ...
+
+
+\bibliographystyle{apacite}
+\renewcommand{\BCHAIR}{Vorsitz}
+
+% Wird nur der URL-Tag angegeben dann wird diese mit dem 
+% Präfix "Zugriff auf" ausgegeben,
+% Was m.E. Blödsinn ist.
+% Wenn da eine Web-Adresse steht, dann
+% wird jeder sie als solche erkennen.
+% Der String wird mit dem folgenden Kommando gelöscht.
+\renewcommand{\BRetrievedFrom}{}%Original "Zugriff auf"
+\bibliography{zitieren}
+
+\printindex
+
+\end{document}

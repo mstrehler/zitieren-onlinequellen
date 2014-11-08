@@ -1,0 +1,41 @@
+% Vorlage und Test für Zitieren mit APA-Style mit dem Paket "apacite"
+% Version vom 11.06.2011
+% Fragen an: marcostrehler@yahoo.de
+
+% Einteilung des Paperformates und des Satzspiegels
+
+\documentclass[a4paper,DIV13]{scrartcl}
+
+\usepackage[english,ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}	% Schrift "Latin Modern"
+
+\usepackage[]{apacite}
+\renewcommand{\bibliographytypesize}{\small}
+
+\begin{document}
+
+\section{apacite-Test}
+
+\subsubsection{Mehrere Autoren}
+Ein Artikel mit drei Autoren wird erstmalig zitiert \cite{Hembree2003b}. Und das zweite Mal \cite{Hembree2003b}.
+Ein Artikel mit mit mehr als fünf Autoren zitieren sieht so aus \cite{Kupfer1992} und bleibt auch so \cite{Kupfer1992}.
+Ein Artikel oder Buchkapitel mit zwei Autoren verändert sich ebenfalls nicht \cite{Cahill2007} wie man sieht \cite{Cahill2007}.
+Was sich ändert, ist dass die Autoren anstatt mit einem \& durch <<und>> verbunden werden, wenn man das Kapitel von \citeA{Cahill2007} im Lauftext einbindet (anstelle in Klammern).
+
+\subsection{Zitieren von Online-Quellen}
+Test für Zitat Spiegel Online: \cite{Seidler2011}
+
+
+\subsection{Zitieren von Vorträgen}
+
+\cite{Zaudig2011}
+
+Kurs im Rahmen des MAS Psychotraumatologie: \cite{Landolt2011, Landolt2011b}
+
+\bibliographystyle{apacite}
+\renewcommand{\BCHAIR}{Vorsitz}
+\bibliography{psych}
+
+\end{document}
